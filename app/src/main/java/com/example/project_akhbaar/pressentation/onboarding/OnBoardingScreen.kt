@@ -1,6 +1,7 @@
 package com.example.project_akhbaar.pressentation.onboarding
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,24 +14,37 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.project_akhbaar.pressentation.Dimens.MediumPadding2
 import com.example.project_akhbaar.pressentation.common.NewsButton
 import com.example.project_akhbaar.pressentation.common.NewsTextButton
 import com.example.project_akhbaar.pressentation.common.PagerIndicator
 import com.example.project_akhbaar.pressentation.onboarding.components.CategorySelectionPage
+import com.example.project_akhbaar.pressentation.onboarding.components.OnBoardingEvent
 import com.example.project_akhbaar.pressentation.onboarding.components.OnBoardingPage
 import com.example.project_akhbaar.pressentation.pages
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun OnBoardingScreen() {
+fun OnBoardingScreen(onEvent: (OnBoardingEvent) -> Unit) {
+    val isSystemInDarkMode = isSystemInDarkTheme()
+    val systemUiColor = rememberSystemUiController()
+    SideEffect {
+        systemUiColor.setSystemBarsColor(
+            color = Color.Black.copy(0.1f),
+            darkIcons = isSystemInDarkMode
+        )
+    }
+
     Column(modifier = Modifier.fillMaxSize()) {
         val pagerState = rememberPagerState(initialPage = 0) {
             pages.size
@@ -47,10 +61,9 @@ fun OnBoardingScreen() {
         }
         HorizontalPager(state = pagerState) { index ->
 
-            if(index == 2){
+            if (index == 2) {
                 CategorySelectionPage()
-            }
-            else OnBoardingPage(page = pages[index])
+            } else OnBoardingPage(page = pages[index])
         }
         Spacer(modifier = Modifier.weight(1f))
         Row(
@@ -87,9 +100,10 @@ fun OnBoardingScreen() {
                     text = buttonsState.value[1],
                     onClick = {
                         scope.launch {
-                            if (pagerState.currentPage == 3){
+                            if (pagerState.currentPage == 2) {
                                 //Navigate to the main screen and save a value in datastore preferences
-                            }else{
+                                onEvent(OnBoardingEvent.SaveAppEntry)
+                            } else {
                                 pagerState.animateScrollToPage(
                                     page = pagerState.currentPage + 1
                                 )

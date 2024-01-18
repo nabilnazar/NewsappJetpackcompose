@@ -45,7 +45,7 @@ fun CategorySelectionPage() {
 
     // State to keep track of selected categories
     val selectedCategories = remember { mutableStateListOf<String>() }
-    Log.d("NABIL", selectedCategories.toList().toString())
+   // Log.d("NABIL", selectedCategories.toList().toString())
 
     Column(
         modifier = Modifier.height(600.dp)
