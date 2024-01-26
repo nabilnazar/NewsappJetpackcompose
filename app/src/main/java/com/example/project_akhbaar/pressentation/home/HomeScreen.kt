@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
@@ -19,6 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.paging.compose.LazyPagingItems
@@ -63,17 +65,20 @@ fun HomeScreen(articles: LazyPagingItems<Article>, navigate:(String) -> Unit) {
 
         Spacer(modifier = Modifier.height(MediumPadding1))
 
+
         SearchBar(
             modifier = Modifier
                 .padding(horizontal = MediumPadding1)
                 .fillMaxWidth(),
             text = "",
             readOnly = true,
+
             onValueChange = {},
             onSearch = {},
             onClick = {
                 navigate(Route.SearchScreen.route)
-            }
+            },
+
         )
 
         Spacer(modifier = Modifier.height(MediumPadding1))

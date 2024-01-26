@@ -47,6 +47,7 @@ fun SearchBar(
     val interactionSource = remember {
         MutableInteractionSource()
     }
+
     val isClicked = interactionSource.collectIsPressedAsState().value
     LaunchedEffect(key1 = isClicked){
         if(isClicked){
@@ -80,11 +81,21 @@ fun SearchBar(
             },
             shape = MaterialTheme.shapes.medium,
             colors = TextFieldDefaults.colors(
-// add default colors
+                focusedTextColor = if (isSystemInDarkTheme()) Color.Black else Color.White,
+                focusedContainerColor = containerColor,
+                unfocusedContainerColor = containerColor,
+                disabledContainerColor = containerColor,
+                cursorColor = if (isSystemInDarkTheme()) Color.Black else Color.White,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent,
+                disabledIndicatorColor = Color.Transparent,
+                errorIndicatorColor = Color.Transparent,
             ),
             singleLine = true,
+
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
             keyboardActions = KeyboardActions(
+
                 onSearch = {
                     onSearch()
                 }
@@ -108,6 +119,7 @@ fun Modifier.searchBar(): Modifier = composed {
 }
 
 @Preview(showBackground = true)
+@Preview(name = "Light Mode")
 @Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES)
 @Composable
 fun SearchBarPreview() {

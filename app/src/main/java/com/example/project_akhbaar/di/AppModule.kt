@@ -10,7 +10,8 @@ import com.example.project_akhbaar.domain.usecases.app_entry.ReadAppEntry
 import com.example.project_akhbaar.domain.usecases.app_entry.SaveAppEntry
 import com.example.project_akhbaar.domain.usecases.news.GetNews
 import com.example.project_akhbaar.domain.usecases.news.NewsUseCases
-import com.example.project_akhbaar.repository.NewsRepository
+import com.example.project_akhbaar.domain.repository.NewsRepository
+import com.example.project_akhbaar.domain.usecases.news.SearchNews
 import com.example.project_akhbaar.util.Constants.BASE_URL
 import dagger.Module
 import dagger.Provides
@@ -65,6 +66,7 @@ object AppModule {
     ): NewsUseCases {
         return NewsUseCases(
             getNews = GetNews(newsRepository),
+            searchNews = SearchNews(newsRepository)
         )
     }
 
