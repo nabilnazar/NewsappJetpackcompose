@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">project-Akhbaar</string>
+    <string name="filter_view_http_akhbaar">filter_view_http_akhbaar</string>
+    <string name="filter_view_example_akhbaar">filter_view_http_akhbaar</string>
+
 </resources>

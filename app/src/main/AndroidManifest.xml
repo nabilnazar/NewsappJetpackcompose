@@ -23,10 +23,23 @@
             android:theme="@style/App.Starting.Theme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <intent-filter android:label="@string/filter_view_http_akhbaar">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- Accepts URIs that begin with "example://gizmos” -->
+                <data android:scheme="https"/>
+                <data android:host="www.akhbaar.com"/>
+                <data android:scheme="nabil"/>
+                <data android:host="open.akhbaar.app"/>
+            </intent-filter>
+
+
         </activity>
+
     </application>
 
 </manifest>
