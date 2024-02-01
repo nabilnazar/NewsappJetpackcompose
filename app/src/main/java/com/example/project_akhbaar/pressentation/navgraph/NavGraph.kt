@@ -11,9 +11,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.example.project_akhbaar.domain.model.Article
 import com.example.project_akhbaar.domain.usecases.news.GetNews
 import com.example.project_akhbaar.domain.usecases.news.NewsUseCases
 import com.example.project_akhbaar.pressentation.common.SearchBar
+import com.example.project_akhbaar.pressentation.details.components.DetailsScreen
+import com.example.project_akhbaar.pressentation.details.components.DetailsTopBar
 import com.example.project_akhbaar.pressentation.home.HomeScreen
 import com.example.project_akhbaar.pressentation.home.HomeViewModel
 import com.example.project_akhbaar.pressentation.onboarding.OnBoardingScreen
@@ -48,7 +51,24 @@ fun NavGraph(
             composable(route = Route.HomeScreen.route) {
                 val homeViewModel: HomeViewModel = hiltViewModel()
                 val articles = homeViewModel.news.collectAsLazyPagingItems()
-                HomeScreen(articles = articles, navigate = { navController.navigate(Route.SearchScreen.route) })
+                HomeScreen(articles = articles, navigate = { navController.navigate(Route.SearchScreen.route) }, navController)
+            }
+
+            composable(route = Route.DetailsScreen.route + "/{articleTitle}") { backStackEntry ->
+                val articleTitle = backStackEntry.arguments?.getString("articleTitle") ?: ""
+                val homeViewModel: HomeViewModel = hiltViewModel()
+                val articles = homeViewModel.news.collectAsLazyPagingItems()
+                val article = articles.itemSnapshotList.items.firstOrNull { it.title == articleTitle }
+
+                if (article != null) {
+                    DetailsScreen(
+                        article = article,
+                        event = { /* Handle events */ },
+                        navigateUp = { navController.popBackStack() }
+                    )
+                } else {
+                    // Handle the case where the article is not found
+                }
             }
 
             composable(route = Route.SearchScreen.route) {
@@ -56,6 +76,7 @@ fun NavGraph(
                 SearchScreen(state = viewModel.state.value, event = viewModel::onEvent)
             }
         }
+
 
     }
 }

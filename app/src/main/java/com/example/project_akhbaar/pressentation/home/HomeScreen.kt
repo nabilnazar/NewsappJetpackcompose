@@ -23,6 +23,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import androidx.paging.compose.LazyPagingItems
 import com.example.project_akhbaar.R
 import com.example.project_akhbaar.domain.model.Article
@@ -34,7 +35,7 @@ import com.example.project_akhbaar.pressentation.navgraph.Route
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun HomeScreen(articles: LazyPagingItems<Article>, navigate:(String) -> Unit) {
+fun HomeScreen(articles: LazyPagingItems<Article>, navigate:(String) -> Unit, navController: NavController) {
 
     val titles by remember {
         derivedStateOf {
@@ -98,6 +99,7 @@ fun HomeScreen(articles: LazyPagingItems<Article>, navigate:(String) -> Unit) {
             articles = articles,
             onClick = {
                 //TODO: Navigate to Details Screen
+                navController.navigate(Route.DetailsScreen.route + "/${it.title}")
             }
         )
     }
