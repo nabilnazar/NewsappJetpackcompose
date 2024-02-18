@@ -3,14 +3,15 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
+    id("kotlin-parcelize")
 }
 
 android {
-    namespace = "com.example.project_akhbaar"
+    namespace = "com.nabilnazar.project_akhbaar"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.project_akhbaar"
+        applicationId = "com.nabilnazar.project_akhbaar"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -104,4 +105,11 @@ dependencies {
     val paging_version = "3.2.1"
     implementation("androidx.paging:paging-runtime-ktx:$paging_version")
     implementation("androidx.paging:paging-compose:3.2.1")
+
+
+    //Room
+    val room_version = "2.6.1"
+    implementation("androidx.room:room-runtime:$room_version")
+    kapt("androidx.room:room-compiler:$room_version")
+    implementation("androidx.room:room-ktx:2.5.2")
 }
