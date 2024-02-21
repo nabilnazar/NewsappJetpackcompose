@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="App.Starting.Theme" parent="Theme.SplashScreen">
+        <item name="android:windowSplashScreenBackground">@color/ic_launcher_background_tint</item>
+        <!-- <item name="android:windowSplashscreenContent">@color/ic_launcher_background_tint</item> -->
+        !
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/whatshot</item>
+        <item name="postSplashScreenTheme">@style/Theme.ProjectAkhbaar</item>
+        <!--            the above line is to make sure that this style is applied back to project theme and this is only for the splash screen part -->
+
+
+    </style>
+</resources>
