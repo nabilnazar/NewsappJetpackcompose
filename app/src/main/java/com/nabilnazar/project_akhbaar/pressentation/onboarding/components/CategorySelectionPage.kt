@@ -23,6 +23,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.nabilnazar.project_akhbaar.R
 import com.nabilnazar.project_akhbaar.pressentation.Dimens
 import com.nabilnazar.project_akhbaar.pressentation.Dimens.MediumPadding2
@@ -30,24 +31,24 @@ import com.nabilnazar.project_akhbaar.pressentation.common.CategoriesButton
 
 
 @Composable
-fun CategorySelectionPage() {
+fun CategorySelectionPage(
+    sharedViewModel: SharedViewModel = viewModel()) {
     // Define a list of available categories
-    val categories = listOf(
-        "Entertainment",
-        "Technology",
-        "General",
-        "Health",
-        "Science",
-        "Sports",
-        "Business"
+    val sources = listOf(
+        "bbc-news",
+        "abc-news",
+        "al-jazeera-english",
+        "hacker-news",
+        "new-scientist",
+        "newsweek",
+        "techradar",
+        "reddit-r-all"
+
     )
 
-    // State to keep track of selected categories
-    val selectedCategories = remember { mutableStateListOf<String>() }
-   // Log.d("NABIL", selectedCategories.toList().toString())
-
     Column(
-        modifier = Modifier.height(600.dp)
+        modifier = Modifier
+            .height(600.dp)
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -67,22 +68,19 @@ fun CategorySelectionPage() {
             color = colorResource(id = R.color.display_small)
         )
 
-        LazyVerticalGrid(
-             columns = GridCells.Fixed(2),
-            // Adjust the number of columns as needed
-        ) {
-            items(categories) { category ->
-                // Use lowercase for network calls (better to use an enum as suggested earlier)
+        LazyVerticalGrid(columns = GridCells.Fixed(2)) {
+            items(sources) { category ->
+                // Dynamically determine if the category is selected
+                val isSelected = category in sharedViewModel.selectedSources
 
-                // Round button for each category
                 CategoryButton(
                     text = category,
-                    isSelected = category in selectedCategories,
+                    isSelected = isSelected,  // Pass the dynamic state
                     onClick = {
-                        if (category in selectedCategories) {
-                            selectedCategories.remove(category)
+                        if (isSelected) {
+                            sharedViewModel.removeSource(category)
                         } else {
-                            selectedCategories.add(category)
+                            sharedViewModel.addSources(category)
                         }
                     }
                 )
@@ -99,7 +97,8 @@ fun CategoryButton(text: String, onClick: () -> Unit, isSelected: Boolean) {
         text = text,
         modifier = Modifier
             .padding(8.dp)
-            .height(48.dp).width(150.dp),
+            .height(48.dp)
+            .width(150.dp),
         onClick = onClick,
         isSelected = isSelected
     )

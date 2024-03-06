@@ -54,4 +54,14 @@ class NewsRepositoryImpl @Inject constructor(
     override suspend fun getArticle(url: String): Article? {
         return newsDao.getArticle(url = url)
     }
+
+    private var selectedSources = mutableListOf<String>()
+
+    override fun getSelectedSources(): List<String> = selectedSources
+
+    override fun setSelectedSources(sources: List<String>) {
+        selectedSources.clear()
+        selectedSources.addAll(sources)
+}
+
 }

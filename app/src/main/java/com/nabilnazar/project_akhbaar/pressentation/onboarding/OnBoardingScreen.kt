@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.nabilnazar.project_akhbaar.pressentation.Dimens.MediumPadding2
 import com.nabilnazar.project_akhbaar.pressentation.common.NewsButton
 import com.nabilnazar.project_akhbaar.pressentation.common.NewsTextButton
@@ -31,11 +32,14 @@ import com.nabilnazar.project_akhbaar.pressentation.onboarding.components.OnBoar
 import com.nabilnazar.project_akhbaar.pressentation.onboarding.components.OnBoardingPage
 import com.nabilnazar.project_akhbaar.pressentation.pages
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.nabilnazar.project_akhbaar.pressentation.onboarding.components.SharedViewModel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OnBoardingScreen(onEvent: (OnBoardingEvent) -> Unit) {
+
+    val viewModel: SharedViewModel = hiltViewModel()
     val isSystemInDarkMode = isSystemInDarkTheme()
     val systemUiColor = rememberSystemUiController()
     SideEffect {
@@ -62,7 +66,7 @@ fun OnBoardingScreen(onEvent: (OnBoardingEvent) -> Unit) {
         HorizontalPager(state = pagerState) { index ->
 
             if (index == 2) {
-                CategorySelectionPage()
+                CategorySelectionPage(viewModel)
             } else OnBoardingPage(page = pages[index])
         }
         Spacer(modifier = Modifier.weight(1f))

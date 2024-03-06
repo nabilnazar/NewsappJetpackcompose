@@ -5,20 +5,23 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
+import com.nabilnazar.project_akhbaar.domain.repository.NewsRepository
 import com.nabilnazar.project_akhbaar.domain.usecases.news.GetNews
+import com.nabilnazar.project_akhbaar.pressentation.onboarding.components.SharedViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val getNewsUseCase: GetNews
+    private val getNewsUseCase: GetNews,
+    private val newsRepository: NewsRepository
 ): ViewModel() {
-
+    val selectedSources: List<String> = newsRepository.getSelectedSources()
     var state = mutableStateOf(HomeState())
         private set
 
     val news = getNewsUseCase(
-        sources = listOf("bbc-news","abc-news","al-jazeera-english")
+        sources = selectedSources
     ).cachedIn(viewModelScope)
 
     fun onEvent(event: HomeEvent){

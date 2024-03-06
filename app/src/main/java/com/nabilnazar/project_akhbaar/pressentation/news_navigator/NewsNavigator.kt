@@ -103,12 +103,6 @@ fun NewsNavigator() {
                 val articles = viewModel.news.collectAsLazyPagingItems()
                 HomeScreen(
                     articles = articles,
-                    navigateToSearch = {
-                        navigateToTab(
-                            navController = navController,
-                            route = Route.SearchScreen.route
-                        )
-                    },
                     navigateToDetails = { article ->
                         navigateToDetails(
                             navController = navController,

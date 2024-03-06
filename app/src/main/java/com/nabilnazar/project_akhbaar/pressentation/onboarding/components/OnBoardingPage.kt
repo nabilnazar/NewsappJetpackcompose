@@ -61,7 +61,7 @@ fun OnBoardingPagePreview() {
     ProjectAkhbaarTheme {
         OnBoardingPage(
             page = Page(
-                title = "Lorem Ipsum is simply dummy",
+                title = "A ",
                 description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
                 image = R.drawable.img_2
             )

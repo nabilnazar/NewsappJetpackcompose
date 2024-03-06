@@ -18,4 +18,7 @@ interface NewsRepository {
 
     suspend fun getArticle(url: String): Article?
 
+    fun getSelectedSources(): List<String>
+    fun setSelectedSources(sources: List<String>)
+
 }
