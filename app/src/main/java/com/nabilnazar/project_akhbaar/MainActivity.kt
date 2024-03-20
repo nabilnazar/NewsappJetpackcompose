@@ -24,13 +24,19 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : ComponentActivity(){
+class MainActivity : ComponentActivity() {
 
     private val viewModel by viewModels<MainViewModel>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
+        // Check for app update and clear cache if needed
+        checkForUpdateAndClearCache()
+
+
         installSplashScreen().apply {
             setKeepOnScreenCondition(condition = { viewModel.splashCondition.value })
         }
@@ -67,12 +73,33 @@ class MainActivity : ComponentActivity(){
                 }
                 // A surface container using the 'background' color from the theme
                 //Add fillMaxSize()
-                Box(modifier = Modifier.background(MaterialTheme.colorScheme.background).fillMaxSize()) {
+                Box(
+                    modifier = Modifier.background(MaterialTheme.colorScheme.background)
+                        .fillMaxSize()
+                ) {
                     NavGraph(startDestination = viewModel.startDestination.value)
                 }
             }
         }
     }
 
-}
+    private fun checkForUpdateAndClearCache() {
+        val prefs = getSharedPreferences("updatePref", MODE_PRIVATE)
+        val currentVersionCode = BuildConfig.VERSION_CODE
+        val savedVersionCode = prefs.getInt("version_code", -1)
 
+        if (currentVersionCode > savedVersionCode) {
+            // Clear cache because this is an update
+            clearAppCache()
+
+            // Update saved version code
+            prefs.edit().putInt("version_code", currentVersionCode).apply()
+        }
+
+    }
+
+    private fun clearAppCache() {
+        cacheDir.deleteRecursively()
+    }
+
+}
