@@ -15,7 +15,7 @@ class SharedViewModel @Inject constructor(
 
     // Initialize selectedSources from the repository
     var selectedSources = mutableStateListOf<String>().apply {
-        addAll(newsRepository.getSelectedSources())
+        newsRepository.getSelectedSources()
     }
 
 

@@ -1,6 +1,7 @@
 package com.nabilnazar.project_akhbaar.di
 
 import android.app.Application
+import android.content.Context
 import androidx.room.Room
 import com.nabilnazar.project_akhbaar.data.local.NewsDao
 import com.nabilnazar.project_akhbaar.data.local.NewsDatabase
@@ -50,5 +51,12 @@ object AppModule {
     fun provideNewsDao(
         newsDatabase: NewsDatabase
     ): NewsDao = newsDatabase.newsDao
+
+
+    @Provides
+    @Singleton
+    fun provideContext(application: Application): Context {
+        return application.applicationContext
+    }
 
 }

@@ -1,5 +1,7 @@
 package com.nabilnazar.project_akhbaar.data.repository
 
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -14,8 +16,21 @@ import javax.inject.Inject
 
 class NewsRepositoryImpl @Inject constructor(
     private val newsApi: NewsApi,
-    private val newsDao: NewsDao
+    private val newsDao: NewsDao,
+    private val context: Context
 ) : NewsRepository {
+
+    private val sharedPref: SharedPreferences by lazy {
+        context.getSharedPreferences("selected_sources", Context.MODE_PRIVATE)
+    }
+    private var selectedSources  = mutableListOf<String>()
+
+    init {
+        val savedSources = sharedPref.getStringSet("sources", null)
+        if (savedSources != null) {
+            selectedSources.addAll(savedSources)
+        }
+    }
 
     override fun getNews(sources: List<String>): Flow<PagingData<Article>> {
         return Pager(
@@ -55,13 +70,14 @@ class NewsRepositoryImpl @Inject constructor(
         return newsDao.getArticle(url = url)
     }
 
-    private var selectedSources = mutableListOf<String>()
 
-    override fun getSelectedSources(): List<String> = selectedSources
+    override fun getSelectedSources(): List<String> = selectedSources.toList()
 
     override fun setSelectedSources(sources: List<String>) {
         selectedSources.clear()
         selectedSources.addAll(sources)
+        // Save the selected sources to SharedPreferences
+        sharedPref.edit().putStringSet("sources", HashSet(sources)).apply()
 }
 
 }
